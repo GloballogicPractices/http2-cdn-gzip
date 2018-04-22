@@ -1,0 +1,46 @@
+version: '3'
+
+# Description:  This Compose file created for demo purpose only. Purpose of this compose file is to show how http2, CDN and gzip compression can help to improve performance of website/API.
+# Maintain BY: Vaibhav Gupta (GLP Devops Team)
+# Date: 22nd April 2018
+# Version: 1.0.0
+# Services Running:
+#        1. nginx with html page
+#        2. http2 enabled Nginx  with html page
+#        3. gzip enabled nginx with html page
+#        4. nginx with cdn configure html page
+# Assumptions/Prerequisites:
+#        1. Docker compose Setup
+#        2. Require CDN if you want to test performance test with CDN
+#
+# Change History:
+# 22ndApril2018 VaibhavGupta  Initial Version 1.0.0 released for demo
+# 
+
+services:
+
+    # Check code without any performance technique
+    nginx-normal:
+      build: normal/
+      ports:
+        - "80:80"
+    
+    # Http2 run only on https/ssl
+    nginx-http2:
+      build: http2/
+      ports:
+        - "81:80"
+        - "444:443"
+    
+    # gzip Compression 
+    nginx-gzip-compressed:
+      build: gzip-compressed/
+      ports:
+        - "82:80"
+        - "442:443"
+
+    # Before Run this section u need to push testdata file to your cdn and mention uploaded path to html file
+    nginx-cdn:
+      build: cdn/
+      ports:
+        - "83:80"
